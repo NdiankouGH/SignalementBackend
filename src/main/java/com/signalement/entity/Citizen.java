@@ -1,4 +1,17 @@
 package com.signalement.entity;
 
-public class Citizen {
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class Citizen extends User {
+
+    private String phoneNumber;
+    private String address;
+    private String city;
 }
