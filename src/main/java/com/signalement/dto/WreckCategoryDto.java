@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WreekCategoryDto {
+public class WreckCategoryDto {
 
     private String name;
     private String description;

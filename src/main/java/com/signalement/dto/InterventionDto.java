@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InterventionDto {
-
+    private Long id;
     @NotNull(message = "L'identifiant du signalement ne doit pas être nul.")
     private Long municipality_id;
     @NotNull(message = "L'identifiant de l'agent municipal ne doit pas être nul.")

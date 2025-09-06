@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 public class UserDto {
 
+    private Long id;
     @NotNull(message = "Le prénom ne doit pas être nul.")
     private String firstName;
     @NotNull(message = "Le nom de famille ne doit pas être nul.")

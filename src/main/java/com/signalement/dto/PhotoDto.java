@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PhotoDto {
 
+    private Long id;
     @NotNull(message = "L'URL de la photo ne doit pas être nulle.")
     private String url;
     private String title;

@@ -14,6 +14,7 @@ import java.util.Date;
 public class ReportingDto {
 
 
+    private Long id;
     @NotNull(message = "La date du rapport ne doit pas être nulle.")
     private Date reportDate;
     @NotNull(message = "Le titre du rapport ne doit pas être nul.")

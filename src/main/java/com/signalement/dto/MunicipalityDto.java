@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MunicipalityDto {
 
+    private Long id;
     @NotNull(message = "Le nom de la municipalité ne doit pas être nul.")
     private String name;
     private String description;
