@@ -9,6 +9,7 @@ import com.signalement.mapper.ReportingMapper;
 import com.signalement.service.IReportingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +48,7 @@ public class ReportingServiceImpl implements IReportingService {
         logger.info("Récupération du signalement avec l'id {}", id);
         return reportingMapper.toReportingDto(
                 reportingRepository.findById(id).orElseThrow(
-                        () -> new RequestException("Signalement avec l'id " + id + " non trouvé", null)
+                        () -> new RequestException("Signalement avec l'id " + id + " non trouvé", HttpStatus.NOT_FOUND)
                 )
         );
     }
@@ -58,7 +59,7 @@ public class ReportingServiceImpl implements IReportingService {
         try {
             logger.info("Suppression du signalement avec l'id {}", id);
             reportingRepository.deleteById(id);
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             logger.error("Erreur lors de la suppression du signalement avec l'id {}", id);
             throw new EntityNotFoundException("Erreur lors de la suppression du signalement avec l'id " + id);
         }
@@ -117,6 +118,23 @@ public class ReportingServiceImpl implements IReportingService {
         } catch (RequestException e) {
             logger.error("Erreur lors de la récupération des signalements de la municipalité avec l'id {}: {}", municipalityId, e.getMessage());
             throw new RequestException("Erreur lors de la récupération des signalements de la municipalité avec l'id " + municipalityId, e.getStatus());
+        }
+    }
+
+    /**
+     * @param wreckCategoryId
+     * @return
+     */
+    @Override
+    public List<ReportingDto> getAllByWreckCategoryId(Long wreckCategoryId) {
+        try{
+            logger.info("Récupération de tous les signalements de la catégorie de déchet avec l'id {}", wreckCategoryId);
+            return reportingRepository.findAllByCategory_Id(wreckCategoryId).stream()
+                    .map(reportingMapper::toReportingDto)
+                    .toList();
+        } catch (RequestException e) {
+            logger.error("Erreur lors de la récupération des signalements de la catégorie de déchet avec l'id {}: {}", wreckCategoryId, e.getMessage());
+            throw new RequestException("Erreur lors de la récupération des signalements de la catégorie de déchet avec l'id " + wreckCategoryId, e.getStatus());
         }
     }
 }

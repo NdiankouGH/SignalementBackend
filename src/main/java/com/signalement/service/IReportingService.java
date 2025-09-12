@@ -18,4 +18,5 @@ public interface IReportingService {
     List<ReportingDto> getAllReportingsByCitizenId(Long citizenId);
 
     List<ReportingDto> getAllReportingsByMunicipality(Long municipalityId);
+    List<ReportingDto> getAllByWreckCategoryId(Long wreckCategoryId);
 }

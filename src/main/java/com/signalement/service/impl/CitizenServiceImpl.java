@@ -25,6 +25,7 @@ public class CitizenServiceImpl implements ICitizenService {
 
     @Transactional(readOnly = true)
     @Override
+
     public CitizenDto getCitizenById(Long id) {
         return citizenMapper.toCitizenDto(
                 citizenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Citoyen non trouvé avec l'id: " + id))

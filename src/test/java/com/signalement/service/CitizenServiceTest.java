@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 
 import java.util.List;
@@ -65,17 +64,17 @@ public class CitizenServiceTest {
 
     @Test
     void testCreateCitizenSuccess() {
-       when(citizenMapper.fromCitizenDto(citizen)).thenReturn(citizenEntity);
-       when(citizenRepository.save(any(Citizen.class))).thenReturn(citizenEntity);
-       when(citizenMapper.toCitizenDto(citizenEntity)).thenReturn(citizen);
+        when(citizenMapper.fromCitizenDto(citizen)).thenReturn(citizenEntity);
+        when(citizenRepository.save(any(Citizen.class))).thenReturn(citizenEntity);
+        when(citizenMapper.toCitizenDto(citizenEntity)).thenReturn(citizen);
 
-         CitizenDto createdCitizen = citizenService.createCitizen(citizen);
-         assertEquals("Papis", createdCitizen.getFirstName());
-            assertEquals("Ndoye", createdCitizen.getLastName());
-            assertEquals("papisndoye59@gmail.com", createdCitizen.getEmail());
-            assertEquals("Dakar Hlm patte d'oie", createdCitizen.getAddress());
-            assertEquals("770931244", createdCitizen.getPhoneNumber());
-            verify(citizenRepository).save(any(Citizen.class));
+        CitizenDto createdCitizen = citizenService.createCitizen(citizen);
+        assertEquals("Papis", createdCitizen.getFirstName());
+        assertEquals("Ndoye", createdCitizen.getLastName());
+        assertEquals("papisndoye59@gmail.com", createdCitizen.getEmail());
+        assertEquals("Dakar Hlm patte d'oie", createdCitizen.getAddress());
+        assertEquals("770931244", createdCitizen.getPhoneNumber());
+        verify(citizenRepository).save(any(Citizen.class));
     }
 
     @Test
@@ -93,8 +92,9 @@ public class CitizenServiceTest {
     @Test
     void testGetCitizenByIdFailure() {
         when(citizenRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class,() ->citizenService.getCitizenById(1L));
+        assertThrows(EntityNotFoundException.class, () -> citizenService.getCitizenById(1L));
     }
+
     @Test
     void testUpdateCitizenSuccess() {
         when(citizenRepository.findById(1L)).thenReturn(Optional.of(citizenEntity));
@@ -112,7 +112,7 @@ public class CitizenServiceTest {
     @Test
     void testUpdateCitizenFailure() {
         when(citizenRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class,() ->citizenService.updateCitizen(1L,citizen));
+        assertThrows(EntityNotFoundException.class, () -> citizenService.updateCitizen(1L, citizen));
     }
 
     @Test
@@ -125,19 +125,19 @@ public class CitizenServiceTest {
     @Test
     void testDeleteCitizenFailure() {
         doThrow(new EntityNotFoundException()).when(citizenRepository).deleteById(1L);
-        assertThrows(EntityNotFoundException.class,() ->citizenService.deleteCitizen(1L));
+        assertThrows(EntityNotFoundException.class, () -> citizenService.deleteCitizen(1L));
     }
 
 
     @Test
-    void  testGetAllCitizens() {
+    void testGetAllCitizens() {
         List<Citizen> citizenList = List.of(citizenEntity);
         when(citizenRepository.findAll()).thenReturn(citizenList);
         when(citizenMapper.toCitizenDto(citizenEntity)).thenReturn(citizen);
 
         List<CitizenDto> allCitizen = citizenService.getAllCitizens();
         assertEquals(1, allCitizen.size());
-        assertEquals("Papis",allCitizen.get(0).getFirstName());
+        assertEquals("Papis", allCitizen.get(0).getFirstName());
         verify(citizenRepository).findAll();
     }
 
@@ -155,6 +155,6 @@ public class CitizenServiceTest {
     @Test
     void testFindByEmailFailure() {
         when(citizenRepository.findByEmail("papisndoye59@gmail.com")).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class,() ->citizenService.findByEmail("papisndoye59@gmail.com"));
+        assertThrows(EntityNotFoundException.class, () -> citizenService.findByEmail("papisndoye59@gmail.com"));
     }
 }

@@ -15,4 +15,6 @@ public interface IInterventionService {
     void deleteIntervention(Long id);
 
     List<InterventionDto> getAllInterventions();
+
+    InterventionDto getInterventionByReportingId(Long reportingId);
 }

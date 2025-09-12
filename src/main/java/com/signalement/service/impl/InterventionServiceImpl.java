@@ -91,4 +91,17 @@ public class InterventionServiceImpl implements IInterventionService {
             throw new RequestException("Erreur lors du get all des interventions", HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * @param reportingId
+     * @return
+     */
+    @Override
+    public InterventionDto getInterventionByReportingId(Long reportingId) {
+        return interventionMapper.toInterventionDto(
+                interventionRepository.findByReportingId(reportingId).orElseThrow(
+                        () -> new EntityNotFoundException("Intervention avec reporting id " + reportingId + " Non trouvé")
+                )
+        );
+    }
 }

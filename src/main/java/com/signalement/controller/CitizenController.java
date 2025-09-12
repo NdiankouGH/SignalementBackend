@@ -5,6 +5,7 @@ import com.signalement.service.impl.CitizenServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,24 +20,28 @@ public class CitizenController {
         this.citizenService = citizenService;
     }
 
+    @PreAuthorize("hasRole('MUNICIPAL_AGENT,ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<CitizenDto> getCitizenById(Long id) {
+    public ResponseEntity<CitizenDto> getCitizenById(@PathVariable Long id) {
         logger.info("Reponse pour la recherche d'un citoyen par son id");
         return ResponseEntity.ok(citizenService.getCitizenById(id));
     }
 
+    @PreAuthorize("hasRole('MUNICIPAL_AGENT,ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<CitizenDto> createCitizen(@RequestBody CitizenDto citizenDto) {
         logger.info("Reponse pour la création d'un citoyen");
         return ResponseEntity.ok(citizenService.createCitizen(citizenDto));
     }
 
+    @PreAuthorize("hasRole('MUNICIPAL_AGENT,ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<CitizenDto> updateCitizen(@PathVariable Long id, @RequestBody CitizenDto citizenDto) {
         logger.info(" modification d'un citoyen");
         return ResponseEntity.ok(citizenService.updateCitizen(id, citizenDto));
     }
 
+    @PreAuthorize("hasRole('MUNICIPAL_AGENT,ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCitizen(@PathVariable Long id) {
         logger.info(" suppression d'un citoyen");
@@ -44,6 +49,7 @@ public class CitizenController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('MUNICIPAL_AGENT,ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<CitizenDto>> getAllCitizen() {
         return ResponseEntity.ok().body(citizenService.getAllCitizens());

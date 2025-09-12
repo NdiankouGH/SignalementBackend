@@ -21,4 +21,5 @@ public class InterventionDto {
     @NotNull(message = "Le statut de l'intervention ne doit pas être nul.")
     private String status;
     private String comment;
+    private Long reporting_id;
 }

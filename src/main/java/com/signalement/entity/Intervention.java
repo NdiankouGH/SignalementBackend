@@ -30,4 +30,7 @@ public class Intervention {
     private StatusIntervention status;
 
     private String comment;
+    @ManyToOne
+    @JoinColumn(name = "reporting_id")
+    private Reporting reporting;
 }

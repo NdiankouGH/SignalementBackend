@@ -39,6 +39,7 @@ public class Reporting {
     @JoinColumn(name = "wreck_category_id")
     private WreckCategory category;
 
+
     @ManyToOne
     @JoinColumn(name = "municipality_id")
     private Municipality municipality;

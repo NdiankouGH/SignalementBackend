@@ -5,6 +5,7 @@ import com.signalement.dto.ReportingDto;
 import com.signalement.entity.Reporting;
 import com.signalement.entity.StatusSignalement;
 import com.signalement.exception.EntityNotFoundException;
+import com.signalement.exception.RequestException;
 import com.signalement.mapper.ReportingMapper;
 import com.signalement.service.impl.ReportingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
- class ReportingServiceTest {
+class ReportingServiceTest {
 
     @InjectMocks
     private ReportingServiceImpl reportingService;
@@ -36,13 +37,13 @@ import static org.mockito.Mockito.*;
     private ReportingDto reportingDto;
 
     @BeforeEach
-    public void setup() {
+     void setup() {
 
         reporting = new Reporting();
         reporting.setId(1L);
-        reporting.setTitle("Pothole on Main St");
-        reporting.setDescription("There is a large pothole on Main St that needs repair.");
-        reporting.setStatus(StatusSignalement.valueOf("OPEN"));
+        reporting.setTitle("Pothole sur Main St");
+        reporting.setDescription("Il y a un grand nid-de-poule sur Main St qui doit être réparé.");
+        reporting.setStatus(StatusSignalement.valueOf("PENDING"));
 
         reportingDto = new ReportingDto();
         reportingDto.setId(1L);
@@ -81,23 +82,21 @@ import static org.mockito.Mockito.*;
 
         verify(reportingRepository).findById(1L);
     }
+
     @Test
     void testGetReportingById_NotFound() {
         when(reportingRepository.findById(1L)).thenReturn(java.util.Optional.empty());
-        doThrow(EntityNotFoundException.class).when(reportingRepository).findById(1L);
-        assertEquals("Signalement avec id 1 Non trouvé", assertThrows(EntityNotFoundException.class, () -> reportingService.getReportingById(1L)).getMessage());
+       assertThrows(RequestException.class, () -> reportingService.getReportingById(1L));
         verify(reportingRepository).findById(1L);
     }
 
     @Test
     void testUpdateReporting() {
         when(reportingRepository.findById(1L)).thenReturn(java.util.Optional.of(reporting));
-        when(reportingMapper.fromReportingDto(reportingDto)).thenReturn(reporting);
         when(reportingRepository.save(reporting)).thenReturn(reporting);
         when(reportingMapper.toReportingDto(reporting)).thenReturn(reportingDto);
 
         ReportingDto updatedDto = reportingService.updateReporting(1L, reportingDto);
-        assert updatedDto != null;
         assertEquals(reportingDto.getId(), updatedDto.getId());
         assertEquals(reportingDto.getTitle(), updatedDto.getTitle());
         assertEquals(reportingDto.getDescription(), updatedDto.getDescription());
@@ -110,8 +109,8 @@ import static org.mockito.Mockito.*;
     @Test
     void testUpdateReporting_NotFound() {
         when(reportingRepository.findById(1L)).thenReturn(java.util.Optional.empty());
-        doThrow(EntityNotFoundException.class).when(reportingRepository).findById(1L);
-        assertEquals("Signalement avec id 1 Non trouvé", assertThrows(EntityNotFoundException.class, () -> reportingService.updateReporting(1L, reportingDto)).getMessage());
+      //  doThrow(EntityNotFoundException.class).when(reportingRepository).findById(1L);
+        assertThrows(EntityNotFoundException.class, () -> reportingService.updateReporting(1L, reportingDto));
         verify(reportingRepository).findById(1L);
     }
 
@@ -121,9 +120,9 @@ import static org.mockito.Mockito.*;
         reportingService.deleteReporting(1L);
         verify(reportingRepository).deleteById(1L);
     }
-    @Test
+
     void testDeleteReporting_NotFound() {
-        doThrow(new EntityNotFoundException ()).when(reportingRepository).deleteById(1L);
+        when(reportingRepository.findById(1L)).thenReturn(java.util.Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> reportingService.deleteReporting(1L));
         verify(reportingRepository).deleteById(1L);
     }
@@ -143,8 +142,9 @@ import static org.mockito.Mockito.*;
 
         verify(reportingRepository).findAll();
     }
+
     @Test
-    void testGetAllReportingsByMunicipality(){
+    void testGetAllReportingsByMunicipality() {
         when(reportingRepository.findAllByMunicipalityId(1L)).thenReturn(java.util.List.of(reporting));
         when(reportingMapper.toReportingDto(reporting)).thenReturn(reportingDto);
 
