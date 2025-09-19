@@ -37,7 +37,7 @@ class ReportingServiceTest {
     private ReportingDto reportingDto;
 
     @BeforeEach
-     void setup() {
+    void setup() {
 
         reporting = new Reporting();
         reporting.setId(1L);
@@ -86,7 +86,7 @@ class ReportingServiceTest {
     @Test
     void testGetReportingById_NotFound() {
         when(reportingRepository.findById(1L)).thenReturn(java.util.Optional.empty());
-       assertThrows(RequestException.class, () -> reportingService.getReportingById(1L));
+        assertThrows(RequestException.class, () -> reportingService.getReportingById(1L));
         verify(reportingRepository).findById(1L);
     }
 
@@ -109,7 +109,7 @@ class ReportingServiceTest {
     @Test
     void testUpdateReporting_NotFound() {
         when(reportingRepository.findById(1L)).thenReturn(java.util.Optional.empty());
-      //  doThrow(EntityNotFoundException.class).when(reportingRepository).findById(1L);
+        //  doThrow(EntityNotFoundException.class).when(reportingRepository).findById(1L);
         assertThrows(EntityNotFoundException.class, () -> reportingService.updateReporting(1L, reportingDto));
         verify(reportingRepository).findById(1L);
     }

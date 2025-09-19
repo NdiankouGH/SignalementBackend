@@ -127,7 +127,7 @@ public class ReportingServiceImpl implements IReportingService {
      */
     @Override
     public List<ReportingDto> getAllByWreckCategoryId(Long wreckCategoryId) {
-        try{
+        try {
             logger.info("Récupération de tous les signalements de la catégorie de déchet avec l'id {}", wreckCategoryId);
             return reportingRepository.findAllByCategory_Id(wreckCategoryId).stream()
                     .map(reportingMapper::toReportingDto)

@@ -7,7 +7,6 @@ import com.signalement.entity.RefreshToken;
 import com.signalement.entity.User;
 import com.signalement.exception.ApiException;
 import com.signalement.service.impl.CustomUserDetailsService;
-import com.signalement.service.impl.MunicipalityAgentServiceImpl;
 import com.signalement.service.impl.RefreshTokenService;
 import com.signalement.service.impl.UserServiceImpl;
 import com.signalement.util.JwtUtil;
@@ -18,7 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,13 +28,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtil jwtUtil;
     private final UserServiceImpl userService;
     private final RefreshTokenService refreshTokenService;
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-
 
 
     public AuthController(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil, UserServiceImpl userService, RefreshTokenService refreshTokenService) {

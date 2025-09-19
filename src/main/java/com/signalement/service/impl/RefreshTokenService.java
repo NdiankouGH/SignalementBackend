@@ -4,14 +4,12 @@ import com.signalement.dao.RefreshTokenRepository;
 import com.signalement.dao.UserRepository;
 import com.signalement.entity.RefreshToken;
 import com.signalement.entity.User;
-import com.signalement.exception.ApiException;
 import com.signalement.exception.RequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +26,7 @@ public class RefreshTokenService {
         this.refreshTokenRepository = refreshTokenRepository;
         this.userRepository = userRepository;
     }
+
     @Transactional
     public RefreshToken createOrUpdateRefreshToken(String username) {
         User user = userRepository.findByUsername(username)

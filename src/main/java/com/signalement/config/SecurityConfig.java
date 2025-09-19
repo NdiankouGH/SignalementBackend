@@ -2,7 +2,6 @@ package com.signalement.config;
 
 import com.signalement.security.JwtAuthenticationFilter;
 import com.signalement.service.impl.CustomUserDetailsService;
-import com.signalement.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +26,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig   {
+public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailsService userDetailsService;
@@ -49,6 +48,7 @@ public class SecurityConfig   {
         authProvider.setPasswordEncoder(passwordEncoder()); // Utilisation d'un encodeur de mot de passe
         return authProvider;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,14 +62,16 @@ public class SecurityConfig   {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("swagger-ui/**", "v3/api-docs/**", "swagger-resources/**").permitAll()
-                        .requestMatchers("/api/citizens/**").hasAnyRole("USER", "CITIZEN")
-                        .requestMatchers("/api/reports/**").hasAnyRole("USER", "MUNICIPAL_AGENT")
-                        .requestMatchers("/api/municipalities/**").hasRole("MUNICIPAL_AGENT")
-                        .requestMatchers("/api/municipality-agents/**").hasRole("MUNICIPAL_AGENT")
-                        .requestMatchers("/api/interventions/**").hasRole("MUNICIPAL_AGENT")
-                        .requestMatchers("/api/photos/**").hasAnyRole("USER", "MUNICIPAL_AGENT")
-                        .requestMatchers("/api/wreck-categories/**").hasRole("MUNICIPAL_AGENT")
+                        .requestMatchers("/metrics/prometheus").permitAll()
+                        .requestMatchers("/actuator/prometheus").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
+                        .requestMatchers("/api/citizens/**").hasAnyRole( "CITIZEN, ADMIN")
+                        .requestMatchers("/api/reports/**").hasAnyRole( "MUNICIPAL_AGENT, ADMIN")
+                        .requestMatchers("/api/municipalities/**").hasRole("MUNICIPAL_AGENT , ADMIN")
+                        .requestMatchers("/api/municipality-agents/**").hasRole("MUNICIPAL_AGENT , ADMIN")
+                        .requestMatchers("/api/interventions/**").hasRole("MUNICIPAL_AGENT, ADMIN")
+                        .requestMatchers("/api/photos/**").hasAnyRole("ADMIN", "MUNICIPAL_AGENT")
+                        .requestMatchers("/api/wreck-categories/**").hasAnyRole("MUNICIPAL_AGENT","ADMIN")
                         .anyRequest().authenticated()
                 )
 
@@ -78,7 +80,7 @@ public class SecurityConfig   {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
                 .headers(AbstractHttpConfigurer::disable);
-      //  http.headers().frameOptions().disable();
+        //  http.headers().frameOptions().disable();
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -89,7 +91,7 @@ public class SecurityConfig   {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3001","http://localhost:3000")); // Accepte les requêtes depuis React (port 3000)
+        configuration.setAllowedOrigins(List.of("http://localhost:3001", "http://localhost:3000")); // Accepte les requêtes depuis React (port 3000)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*")); // Accepte tous les en-têtes
         configuration.setAllowCredentials(true); // Si vous utilisez des cookies ou des informations d'auth

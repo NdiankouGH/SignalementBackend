@@ -1,6 +1,7 @@
 package com.signalement.service;
 
 import com.signalement.dto.PhotoDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,7 +12,8 @@ public interface IPhotoService {
 
     PhotoDto getPhotoById(Long id);
 
-    PhotoDto createPhoto(PhotoDto photoDto);
+
+    PhotoDto createPhoto(MultipartFile file, PhotoDto photoDto);
 
     PhotoDto updatePhoto(Long id, PhotoDto photoDto);
 

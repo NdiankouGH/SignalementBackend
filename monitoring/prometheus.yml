@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 1m
+
+scrape_configs:
+  - job_name: 'Spring boot app'
+    metrics_path: /metrics/prometheus
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['app_signalement:8083']
+
+  - job_name: 'Postgres'
+    static_configs:
+      - targets: ['postgres:5432']
