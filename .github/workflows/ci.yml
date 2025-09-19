@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_IMAGE_NAME: ndoye/app_signalement
+  DOCKER_IMAGE_NAME: papisndoye/app_signalement
   JAVA_VERSION: '17'
 
 jobs:
